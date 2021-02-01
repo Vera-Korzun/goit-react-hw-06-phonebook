@@ -1,7 +1,5 @@
 import { createStore } from "redux";
-import { rootReducer } from "./rootReducer";
+import { composeWithDevTools } from "redux-devtools-extension";
+import formReducer from "./reducers/formReducer";
 
-export const store = createStore(
-  rootReducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-);
+export const store = createStore(formReducer, composeWithDevTools());

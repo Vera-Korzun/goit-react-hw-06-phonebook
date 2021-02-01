@@ -1,10 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const ContactListItem = ({ contact, deleteContactById }) => {
+const ContactListItem = ({ contact, deleteContact }) => {
+  const onHandleDelete = (e) => {
+    const { id } = e.target;
+    deleteContact(id);
+  };
   return (
     <>
-      <li className="contact-list__item" key={contact.id}>
+      <li className="contact-list__item" key="{contact.id}">
         <div className="contact-list__item-ifo">
           <span className="contact-list__item-name">{contact.name}:</span>
           <span className="contact-list__item-number">{contact.number}</span>
@@ -13,8 +17,8 @@ const ContactListItem = ({ contact, deleteContactById }) => {
         <button
           className="contact-list__item-btn"
           type="button"
-          data-id={contact.id}
-          onClick={deleteContactById}
+          id={contact.id}
+          onClick={onHandleDelete}
         >
           Delete
         </button>
@@ -26,6 +30,6 @@ const ContactListItem = ({ contact, deleteContactById }) => {
 export default ContactListItem;
 
 ContactListItem.propTypes = {
-  contacts: PropTypes.object,
-  deleteContactById: PropTypes.func,
+  contacts: PropTypes.array,
+  deleteContact: PropTypes.func,
 };

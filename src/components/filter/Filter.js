@@ -1,8 +1,14 @@
 import React from "react";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import FornFilter from "./FilterSryled";
+import { setFiler } from "../../redux/actions/formActions";
 
-const Filter = ({ value, onChangeFilter }) => {
+const Filter = ({ filter, setFilter }) => {
+  const onChangeFilter = (e) => {
+    const { value } = e.target;
+    setFilter(value);
+  };
   return (
     <FornFilter>
       <form className="filter-form">
@@ -12,7 +18,7 @@ const Filter = ({ value, onChangeFilter }) => {
             className="filter-form__imput"
             type="text"
             name="filter"
-            value={value}
+            value={filter}
             onChange={onChangeFilter}
           />
         </label>
@@ -21,9 +27,23 @@ const Filter = ({ value, onChangeFilter }) => {
   );
 };
 
-export default Filter;
+const mapStateToProps = (state) => {
+  return {
+    filter: state.filter,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setFilter: (value) => {
+      dispatch(setFiler(value));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Filter);
 
 Filter.propTypes = {
-  value: PropTypes.string,
-  onChangeFilter: PropTypes.func,
+  filter: PropTypes.string,
+  setFilter: PropTypes.func,
 };
