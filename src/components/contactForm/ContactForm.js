@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { CSSTransition } from "react-transition-group";
 import { addNewContact } from "../../redux/actions/formActions";
+import PropTypes from "prop-types";
 import Message from "../message/Message";
 import FormContact from "./ContactFormStyled";
 
@@ -113,3 +114,8 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContactForm);
+
+ContactForm.propTypes = {
+  contacts: PropTypes.arrayOf(PropTypes.object),
+  addContact: PropTypes.func,
+};

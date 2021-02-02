@@ -9,7 +9,7 @@ import { createReducer } from "@reduxjs/toolkit";
 import {
   addNewContact,
   deleteContact,
-  setFiler,
+  setFilter,
   getContacts,
 } from "../actions/formActions";
 
@@ -38,7 +38,7 @@ const formReducer = createReducer(
       ],
     }),
 
-    [setFiler]: (state, action) => ({
+    [setFilter]: (state, action) => ({
       ...state,
       filter: action.payload,
     }),

@@ -1,10 +1,26 @@
 import React from "react";
+import { connect } from "react-redux";
+import { deleteContact, setFilter } from "../../redux/actions/formActions";
 import PropTypes from "prop-types";
 
-const ContactListItem = ({ contact, deleteContact }) => {
+const ContactListItem = ({
+  contact,
+  contacts,
+  filter,
+  deleteContact,
+  setFilter,
+}) => {
   const onHandleDelete = (e) => {
     const { id } = e.target;
     deleteContact(id);
+
+    if (
+      contacts.filter((contact) =>
+        contact.name.toLowerCase().includes(filter.toLowerCase())
+      ).length < 2
+    ) {
+      setFilter("");
+    }
   };
   return (
     <>
@@ -27,9 +43,32 @@ const ContactListItem = ({ contact, deleteContact }) => {
   );
 };
 
-export default ContactListItem;
+const mapStateToProps = (state) => {
+  return {
+    contacts: state.contacts.filter((item) =>
+      item.name.toLowerCase().includes(state.filter.toLowerCase())
+    ),
+    filter: state.filter,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    deleteContact: (id) => {
+      dispatch(deleteContact(id));
+    },
+    setFilter: (value) => {
+      dispatch(setFilter(value));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContactListItem);
 
 ContactListItem.propTypes = {
-  contacts: PropTypes.array,
+  contact: PropTypes.object,
+  contacts: PropTypes.arrayOf(PropTypes.object),
+  filter: PropTypes.string,
   deleteContact: PropTypes.func,
+  setFilter: PropTypes.func,
 };

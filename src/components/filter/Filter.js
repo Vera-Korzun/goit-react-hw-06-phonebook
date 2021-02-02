@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import FornFilter from "./FilterSryled";
-import { setFiler } from "../../redux/actions/formActions";
+import { setFilter } from "../../redux/actions/formActions";
 
 const Filter = ({ filter, setFilter }) => {
   const onChangeFilter = (e) => {
@@ -36,7 +36,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     setFilter: (value) => {
-      dispatch(setFiler(value));
+      dispatch(setFilter(value));
     },
   };
 };
