@@ -5,20 +5,10 @@ import ContactForm from "./contactForm/ContactForm";
 import AppWrapper from "./AppStyled";
 import ContactList from "./contactList/ContactList";
 import Filter from "./filter/Filter";
-import Message from "./message/Message";
 
 const App = ({ contacts }) => {
   return (
     <AppWrapper>
-      <CSSTransition
-        // in={showMessage}
-        timeout={250}
-        classNames="message"
-        unmountOnExit
-      >
-        <Message />
-      </CSSTransition>
-
       <CSSTransition in={true} timeout={500} appear={true} classNames="logo">
         <h2 className="phonebook-title">PhoneBook</h2>
       </CSSTransition>

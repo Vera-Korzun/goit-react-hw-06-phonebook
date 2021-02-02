@@ -1,12 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import PropTypes from "prop-types";
 import ContactListItem from "./ContactListItem";
-import ContactsWrapper from "./ContactsStyled";
-import { deleteContact } from "../../redux/actions/formActions";
+import { deleteContact, getContacts } from "../../redux/actions/formActions";
 
-const ContactList = ({ contacts, filter, deleteContact }) => {
+import ContactsWrapper from "./ContactsStyled";
+
+const ContactList = ({ contacts, filter, deleteContact, getContacts }) => {
+  useEffect(() => {
+    if (localStorage.getItem("contacts")) {
+      getContacts(JSON.parse(localStorage.getItem("contacts")));
+    }
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("contacts", JSON.stringify(contacts));
+  }, [contacts]);
+
   return (
     <ContactsWrapper>
       <TransitionGroup component="ul" className="contact-list">
@@ -46,6 +58,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     deleteContact: (id) => {
       dispatch(deleteContact(id));
+    },
+    getContacts: (data) => {
+      dispatch(getContacts(data));
     },
   };
 };

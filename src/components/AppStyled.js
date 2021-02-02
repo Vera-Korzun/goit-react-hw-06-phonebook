@@ -52,12 +52,12 @@ const Wrapper = styled.div`
 
   .filter-enter {
     opacity: 0;
+    transition: all 250ms linear;
     transform: translateX(-100%) translateY(-100%);
   }
   .filter-enter-active {
     opacity: 1;
     transform: translateX(0) translateY(0);
-    transition: all 250ms linear;
   }
   .my-filter-exit {
     opacity: 1;

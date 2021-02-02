@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import { connect, useDispatch } from "react-redux";
+import { connect } from "react-redux";
+import { CSSTransition } from "react-transition-group";
 import { addNewContact } from "../../redux/actions/formActions";
+import Message from "../message/Message";
 import FormContact from "./ContactFormStyled";
 
 const initialState = {
@@ -11,9 +13,14 @@ const initialState = {
 const ContactForm = ({ contacts, addContact }) => {
   const [state, setState] = useState({ ...initialState });
   const [message, setMessage] = useState("");
-  const [showMessage, setShowMessage] = useState("false");
+  const [showMessage, setShowMessage] = useState(false);
 
-  const showAlertMessage = (message) => {
+  const onHandleChange = (e) => {
+    const { name, value } = e.target;
+    setState((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const showAlert = (message) => {
     setMessage(message);
     setShowMessage(true);
     setTimeout(() => {
@@ -26,38 +33,42 @@ const ContactForm = ({ contacts, addContact }) => {
 
   const onHandleSubmit = (e) => {
     e.preventDefault();
-    const contact = { id: state.id, name: state.name, number: state.number };
-    if (contacts.some((item) => item.name === contact.name)) {
-      showAlertMessage(`${contact.name} is already in contacts`);
+    if (contacts.some((item) => item.name === state.name)) {
+      showAlert(`${state.name} is already in contacts`);
+      setState({ ...initialState });
       return;
     }
-
-    if (contacts.some((item) => item.number === contact.number)) {
-      showAlertMessage(
-        `Contact with number ${contact.number} is already in contacts`
-      );
+    if (contacts.some((item) => item.number === state.number)) {
+      showAlert(`Contact with number ${state.number} is already in contacts`);
+      setState({ ...initialState });
       return;
     }
-
-    if (!contact.name.length) {
-      showAlertMessage("Please, enter a name");
+    if (!state.name.length) {
+      showAlert("Please, enter a name");
+      setState({ ...initialState });
       return;
     }
-    if (!contact.number.length) {
-      showAlertMessage("Please, enter a number");
+    if (!state.number.length) {
+      showAlert("Please, enter a number");
+      setState({ ...initialState });
       return;
     }
 
     addContact(state);
+
     setState({ ...initialState });
   };
 
-  const onHandleChange = (e) => {
-    const { name, value } = e.target;
-    setState((prev) => ({ ...prev, [name]: value }));
-  };
   return (
     <FormContact>
+      <CSSTransition
+        in={showMessage}
+        timeout={250}
+        classNames="message"
+        unmountOnExit
+      >
+        <Message message={message} />
+      </CSSTransition>
       <form className="contact-form" onSubmit={onHandleSubmit}>
         <label className="contact-form__title">
           Name
